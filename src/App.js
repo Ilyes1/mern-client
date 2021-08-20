@@ -1,23 +1,51 @@
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react'
 import './App.css';
+import Axios from 'axios'
 
 function App() {
+
+  const [name, setName] = useState('')
+  const [age, setAge] = useState(0)
+  const [users, setUsers] = useState([])
+
+  const add = () => {
+    Axios.post('http://localhost:3001/user', {
+      name: name,
+      age: age
+    })
+    .then(() => {alert('Added')})
+    .catch(() => {alert('err')})
+
+    window.location.reload()
+  }
+  
+  useEffect(() => {
+
+    Axios.get('http://localhost:3001/users')
+    .then((response) => {setUsers(response.data)})
+    .catch(() => {console.log('err')})
+
+    console.log(document.title)
+
+  }, [])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      
+      <div className="inputs">
+        <input type="text" placeholder="Username..." onChange={(e) => setName(e.target.value)} />
+        <input type="number" placeholder="User age..." onChange={(e) => setAge(e.target.value)} />
+        <button onClick={add}>Post user</button>
+      </div>
+
+      <ul>
+        {users.map(user => {
+          return(
+            <li>{user.name}: {user.age}</li>
+          )
+        })}
+      </ul>
+
     </div>
   );
 }
