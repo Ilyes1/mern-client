@@ -9,7 +9,7 @@ function App() {
   const [users, setUsers] = useState([])
 
   const add = () => {
-    Axios.post('http://localhost:3001/user', {
+    Axios.post('http://react--client.herokuapp.com/user', {
       name: name,
       age: age
     })
@@ -21,7 +21,7 @@ function App() {
   
   useEffect(() => {
 
-    Axios.get('http://localhost:3001/users')
+    Axios.get('http://react--client.herokuapp.com/users')
     .then((response) => {setUsers(response.data)})
     .catch(() => {console.log('err')})
 
